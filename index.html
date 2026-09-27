@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MilkyMemory — Your Universe. Your Memories.</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div id="loginScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-brand">✦</div>
+    <h1>MilkyMemory</h1>
+    <p>Your universe. Your memories.</p>
+    <form id="loginForm">
+      <label>Username</label>
+      <input id="loginUsername" autocomplete="username" required>
+      <label>Password</label>
+      <input id="loginPassword" type="password" autocomplete="current-password" required>
+      <button class="primary-btn" type="submit">Enter My Galaxy</button>
+      <div id="loginMessage" class="form-message"></div>
+    </form>
+    <button class="link-btn" id="createAccountButton">Create a new account</button>
+  </div>
+</div>
+
+<div id="registerModal" class="modal-overlay hidden">
+  <div class="memory-modal auth-modal">
+    <button class="modal-close" id="registerClose">×</button>
+    <div class="modal-icon">✦</div>
+    <h2>Create Account</h2>
+    <p class="modal-subtitle">Start your own private galaxy.</p>
+    <form id="registerForm">
+      <label>Username</label>
+      <input id="registerUsername" minlength="3" required>
+      <label>Password</label>
+      <input id="registerPassword" type="password" minlength="6" required>
+      <label>Confirm password</label>
+      <input id="registerConfirm" type="password" minlength="6" required>
+      <div id="registerMessage" class="form-message"></div>
+      <button class="create-memory-button" type="submit">✦ Create Account</button>
+    </form>
+  </div>
+</div>
+
+<div id="app" class="app-shell hidden">
+  <aside class="sidebar">
+    <div class="logo">
+      <h1>MilkyMemory</h1>
+      <p>your universe. your memories.</p>
+    </div>
+    <nav>
+      <button class="nav-item active" data-section="galaxy"><span>◉</span><span class="nav-text">Galaxy</span></button>
+      <button class="nav-item" data-section="timeline"><span>◷</span><span class="nav-text">Timeline</span></button>
+      <button class="nav-item" data-section="albums"><span>▧</span><span class="nav-text">Albums</span></button>
+      <button class="nav-item" data-section="tags"><span>◇</span><span class="nav-text">Tags</span></button>
+      <button class="nav-item" data-section="search"><span>⌕</span><span class="nav-text">Search</span></button>
+      <button class="nav-item" data-section="ai"><span>✦</span><span class="nav-text">AI Companion</span></button>
+      <button class="nav-item" data-section="settings"><span>⚙</span><span class="nav-text">Settings</span></button>
+    </nav>
+    <button class="add-memory" id="addMemoryButton"><span>✦</span><span>Add Memory</span><span>＋</span></button>
+  </aside>
+
+  <div class="stats">
+    <div class="stats-title">STATS</div>
+    <div class="stat"><span>Memories</span><strong id="memoryCount">0</strong></div>
+    <div class="stat"><span>Stars</span><strong id="starCount">0</strong></div>
+    <div class="stat"><span>Albums</span><strong id="albumCount">0</strong></div>
+    <div class="stat"><span>Days</span><strong id="daysCount">0</strong></div>
+  </div>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="search-box"><span>⌕</span><input id="globalSearch" placeholder="Search your galaxy..."></div>
+      <div class="top-actions">
+        <button id="themeButton" title="Toggle theme">☾</button>
+        <button id="notificationButton" title="Notification">✦</button>
+        <button class="profile-button" id="profileButton"><span class="avatar" id="profileAvatar">M</span><span id="profileUsername">User</span>⌄</button>
+        <div id="profileMenu" class="profile-menu hidden">
+          <strong id="menuUsername">User</strong>
+          <button id="logoutButton">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <section id="galaxySection" class="page-section active-section">
+      <div class="galaxy-heading"><div><p>YOUR UNIVERSE</p><h2>Memory Galaxy</h2><span>Every moment becomes a star.</span></div></div>
+      <div id="galaxy">
+        <div class="galaxy-nebula"></div>
+        <div id="backgroundStars"></div>
+        <div id="memoryStars"><svg id="constellationLines" class="constellation-lines"></svg></div>
+        <div class="galaxy-core"></div>
+      </div>
+      <div id="emptyMessage" class="empty-message hidden"><div class="empty-icon">✦</div><h2>Your galaxy is waiting</h2><p>Create your first memory to place a star in your universe.</p><button id="emptyAddButton">+ Create your first memory</button></div>
+      <div class="zoom-controls"><button id="zoomOut">−</button><span id="zoomValue">100%</span><button id="zoomIn">＋</button></div>
+    </section>
+
+    <section id="timelineSection" class="page-section">
+      <div class="timeline-header"><div><p class="timeline-small">YOUR JOURNEY</p><h2>Memory Timeline</h2></div><button id="timelineAddButton" class="timeline-add">+ Add Memory</button></div>
+      <div id="timelineList" class="timeline-list"></div>
+    </section>
+
+    <section id="albumsSection" class="page-section">
+      <div class="albums-header"><div><p class="albums-small">YOUR COLLECTION</p><h2>Memory Albums</h2><p class="albums-subtitle">Organize your memories into collections.</p></div><button id="createAlbumButton" class="create-album-button">+ Create Album</button></div>
+      <div id="albumsGrid" class="albums-grid"></div>
+    </section>
+
+    <section id="tagsSection" class="page-section"><div class="section-page-head"><p>YOUR ORGANIZATION</p><h2>Memory Tags</h2></div><div id="tagsContainer" class="tags-cloud"></div><div id="tagMemories" class="memory-grid"></div></section>
+
+    <section id="searchSection" class="page-section"><div class="section-page-head"><p>EXPLORE</p><h2>Search Memories</h2></div><div class="search-page"><input id="searchInput" placeholder="Search title, description or tags..."><button id="searchButton" class="primary-btn">Search</button></div><div id="searchResults" class="memory-grid"></div></section>
+
+    <section id="aiSection" class="page-section"><div class="section-page-head"><p>YOUR MEMORY ASSISTANT</p><h2>AI Companion</h2><span>Ask questions about your saved memories.</span></div><div id="aiMessages" class="ai-messages"><div class="ai-message">Hi! Ask me how many memories you have, or which is your oldest/latest memory. 🌌</div></div><div class="ai-input-row"><input id="aiInput" placeholder="Ask your galaxy..." autocomplete="off"><button id="aiSend" class="primary-btn">Send</button></div></section>
+
+    <section id="settingsSection" class="page-section"><div class="section-page-head"><p>PERSONALIZE</p><h2>Settings</h2></div><div class="settings-card"><h3 id="settingsUsername">Logged in as User</h3><label class="switch-row"><span>Galaxy animation</span><input type="checkbox" id="animationToggle" checked><span class="switch"></span></label><button id="settingsTheme" class="secondary-btn">Toggle light/dark mode</button><button id="settingsLogout" class="secondary-btn">Log out</button></div></section>
+  </main>
+</div>
+
+<div class="memory-panel" id="memoryPanel">
+  <button class="close-panel" id="closePanel">×</button>
+  <div class="memory-star-icon" id="panelStar">✦</div>
+  <h2 id="panelTitle">Memory</h2><p class="memory-date" id="panelDate"></p>
+  <img id="panelImage" alt="Memory photo" class="panel-image">
+  <p class="memory-description" id="panelDescription"></p>
+  <div class="memory-divider"></div><div class="section-title">TAGS</div><div class="tags" id="panelTags"></div>
+  <div class="panel-actions"><button id="editMemory">✎</button><button class="delete" id="deleteMemory">🗑</button></div>
+  <div class="mini-memories" id="panelMiniMemories"></div>
+</div>
+
+<div class="modal-overlay hidden" id="memoryModal">
+  <div class="memory-modal">
+    <button class="modal-close" id="memoryModalClose">×</button><div class="modal-icon">✦</div><h2 id="memoryModalTitle">Create a Memory</h2><p class="modal-subtitle">Add a moment to your universe.</p>
+    <form id="memoryForm">
+      <label>Memory title</label><input id="memoryTitle" required maxlength="180" placeholder="e.g. Trip to Mountains">
+      <label>Date</label><input id="memoryDate" type="date" required>
+      <label>Description</label><textarea id="memoryDescription" rows="4" placeholder="Tell the story..."></textarea>
+      <label>Tags</label><input id="memoryTags" placeholder="travel, friends, fun">
+      <label>Photo</label><input id="memoryImage" type="file" accept="image/jpeg,image/png,image/gif,image/webp">
+      <button class="create-memory-button" type="submit" id="memorySubmit">✦ Create Memory</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="albumModal">
+  <div class="memory-modal"><button class="modal-close" id="albumModalClose">×</button><div class="modal-icon">▧</div><h2>Create an Album</h2><p class="modal-subtitle">Bring your memories together.</p>
+    <form id="albumForm"><label>Album name</label><input id="albumName" required><label>Description</label><textarea id="albumDescription" rows="3"></textarea><label>Select memories</label><div id="albumMemorySelector" class="album-memory-selector"></div><button class="create-memory-button" type="submit">▧ Create Album</button></form>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
